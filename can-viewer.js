@@ -150,5 +150,29 @@
     rotate(0);
   }
 
+  canvas.addEventListener("pointerdown", event => {
+    if (!event.isPrimary || event.button !== 0) return;
+    drag = { id: event.pointerId, x: event.clientX, rotation };
+    canvas.setPointerCapture(event.pointerId);
+    viewer.classList.add("is-dragging");
+  });
+  canvas.addEventListener("pointermove", event => {
+    if (drag?.id === event.pointerId) rotate(drag.rotation + (event.clientX - drag.x) / (canvas.clientWidth * 1.65));
+  });
+  canvas.addEventListener("lostpointercapture", () => {
+    drag = null;
+    viewer.classList.remove("is-dragging");
+  });
+  for (const button of controls.querySelectorAll("[data-turn]")) {
+    button.addEventListener("click", () => rotate(rotation + Number(button.dataset.turn) / 12));
+  }
+  controls.querySelector("[data-reset]").addEventListener("click", () => rotate(0));
+  viewer.addEventListener("keydown", event => {
+    if (!["ArrowLeft", "ArrowRight", "Home"].includes(event.key)) return;
+    event.preventDefault();
+    rotate(event.key === "Home" ? 0 : rotation + (event.key === "ArrowLeft" ? -1 : 1) / 12);
+  });
+  new ResizeObserver(resize).observe(viewer);
+  window.addEventListener("resize", resize);
   window.vesperCan = { showLabel };
 })();
