@@ -1,0 +1,21 @@
+:root {
+  color-scheme: dark;
+  --ink: #080a10;
+  --paper: #f4efe3;
+  --gold: #e0bf7a;
+  --muted: #babcc7;
+  --rule: #ffffff22;
+  --serif: Georgia, "Times New Roman", serif;
+  --sans: "Century Gothic", "Trebuchet MS", system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--ink); color: var(--paper); font: 16px/1.6 var(--sans); }
+img { display: block; max-width: 100%; }
+a { color: inherit; }
+a:focus-visible, button:focus-visible, .can-wrap:focus-visible { outline: 2px solid #78baff; outline-offset: 5px; }
+[hidden] { display: none !important; }
+p, figure, dl, dd { margin: 0; }
+.skip { position: fixed; z-index: 5; top: 8px; left: 8px; padding: .7rem 1rem; background: var(--paper); color: var(--ink); transform: translateY(-150%); }
+.skip:focus { transform: none; }
