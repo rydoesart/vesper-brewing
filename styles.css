@@ -19,6 +19,7 @@ a:focus-visible, button:focus-visible, .can-wrap:focus-visible { outline: 2px so
 p, figure, dl, dd { margin: 0; }
 .skip { position: fixed; z-index: 5; top: 8px; left: 8px; padding: .7rem 1rem; background: var(--paper); color: var(--ink); transform: translateY(-150%); }
 .skip:focus { transform: none; }
+
 .masthead, .hero, .section-inner, .footer { width: min(100% - 2 * clamp(24px, 6vw, 104px), 1336px); margin-inline: auto; }
 .masthead { min-height: 92px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--rule); gap: 1rem; }
 .brand { display: flex; align-items: center; text-decoration: none; text-transform: uppercase; font-size: .96rem; letter-spacing: .28em; line-height: 1.18; }
@@ -27,6 +28,7 @@ p, figure, dl, dd { margin: 0; }
 nav { display: flex; gap: clamp(1.15rem, 4vw, 3.6rem); }
 nav a, .footer a { text-decoration: none; font-size: .78rem; letter-spacing: .11em; text-transform: uppercase; }
 nav a:hover, .footer a:hover { color: var(--gold); text-decoration: underline; text-underline-offset: .35em; }
+
 .hero { --release-color: #5294f6; position: relative; display: grid; grid-template-columns: .94fr 1.06fr; align-items: center; min-height: 710px; }
 .hero-copy { position: relative; z-index: 1; padding: 4.8rem 0 4.3rem; }
 .eyebrow { font-size: .73rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
@@ -39,6 +41,12 @@ h1 { font-size: clamp(4.6rem, 8.7vw, 9rem); line-height: .86; letter-spacing: -.
 .button { min-height: 49px; margin-top: 30px; padding: .7rem 1rem; display: inline-flex; align-items: center; gap: 1.35rem; background: var(--gold); color: #171105; font-weight: 700; font-size: .86rem; border: 1px solid var(--gold); text-decoration: none; }
 .button:hover { background: var(--paper); border-color: var(--paper); }
 .button span { font-size: 1.1rem; }
+.release-picker { min-inline-size: 0; max-width: 28rem; margin: 1.55rem 0 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.release-picker legend { margin-bottom: .55rem; color: var(--muted); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
+.release-picker button { min-height: 38px; padding: 0 .62rem; background: #101521; color: var(--paper); border: 1px solid #ffffff32; font: .73rem var(--sans); cursor: pointer; }
+.release-picker button::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: .43rem; border-radius: 50%; background: var(--swatch); }
+.release-picker button:hover, .release-picker button[aria-pressed="true"] { border-color: var(--swatch); background: #222630; }
+
 .hero-art { position: relative; align-self: stretch; display: grid; place-items: center; isolation: isolate; min-width: 0; min-height: 540px; }
 .hero-art::before { content: ""; position: absolute; inset: 6% -2% 4%; z-index: -2; background: radial-gradient(ellipse, #11377370, transparent 69%); }
 .halo { position: absolute; top: 49%; left: 51%; width: min(92%, 525px); aspect-ratio: 1; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, #080b16 53%, #091128 60%, color-mix(in srgb, var(--release-color) 45%, #080b16) 64%, var(--release-color) 66.3%, color-mix(in srgb, var(--release-color) 55%, white) 67%, var(--release-color) 68%, color-mix(in srgb, var(--release-color) 40%, #080b16) 70%, color-mix(in srgb, var(--release-color) 25%, #080b16) 73%, transparent 83%); }
@@ -49,18 +57,14 @@ h1 { font-size: clamp(4.6rem, 8.7vw, 9rem); line-height: .86; letter-spacing: -.
 .can { width: 100%; height: auto; clip-path: polygon(10% 1%, 17% .35%, 84% .35%, 90% 1%, 90% 1.6%, 88% 2.1%, 88% 3.6%, 90% 5%, 95% 8%, 98% 10%, 99% 13%, 99% 94%, 98% 95%, 95% 96.3%, 91% 97%, 89% 98.1%, 85% 99%, 78% 99.6%, 64% 99.85%, 35% 99.85%, 21% 99.6%, 14% 99%, 11% 98.1%, 10% 97%, 5% 96.3%, 2% 95%, 1% 94%, 1% 13%, 2% 10%, 5% 8%, 10% 5%, 12% 3.6%, 12% 2.1%, 10% 1.6%); border-radius: 4%; }
 .can-wrap canvas { display: block; width: 100%; height: auto; cursor: grab; touch-action: pan-y; }
 .can-wrap.is-dragging canvas { cursor: grabbing; }
-.hero-art figcaption { position: absolute; top: 21px; right: 0; display: flex; justify-content: center; align-items: center; white-space: nowrap; gap: 14px; color: #dedce5; font-size: .66rem; letter-spacing: .14em; }
-.hero-art figcaption span + span { border-left: 1px solid #e0bf7a75; padding-left: 17px; }
-.release-picker { min-inline-size: 0; max-width: 28rem; margin: 1.55rem 0 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 6px; }
-.release-picker legend { margin-bottom: .55rem; color: var(--muted); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; }
-.release-picker button { min-height: 38px; padding: 0 .62rem; background: #101521; color: var(--paper); border: 1px solid #ffffff32; font: .73rem var(--sans); cursor: pointer; }
-.release-picker button::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: .43rem; border-radius: 50%; background: var(--swatch); }
-.release-picker button:hover, .release-picker button[aria-pressed="true"] { border-color: var(--swatch); background: #222630; }
 .can-controls { position: absolute; bottom: 18px; left: 51%; transform: translateX(-50%); display: grid; grid-template-columns: auto auto auto; justify-content: center; gap: 4px 7px; text-align: center; }
 .can-controls button { background: #0b1020; border: 1px solid #7687a4; color: var(--paper); min-width: 44px; min-height: 44px; padding: 0 11px; white-space: nowrap; font: 700 .78rem var(--sans); cursor: pointer; }
 .can-controls button:hover { background: #233756; border-color: var(--gold); }
 .can-controls button[data-turn] { font-size: 1.25rem; }
 .can-controls p { grid-column: 1 / -1; color: #d4d7e1; font-size: .7rem; white-space: nowrap; }
+.hero-art figcaption { position: absolute; top: 21px; right: 0; display: flex; justify-content: center; align-items: center; white-space: nowrap; gap: 14px; color: #dedce5; font-size: .66rem; letter-spacing: .14em; }
+.hero-art figcaption span + span { border-left: 1px solid #e0bf7a75; padding-left: 17px; }
+
 .section-inner { padding-block: clamp(3.75rem, 8vw, 7.5rem); }
 .beer-section { background: var(--paper); color: #171923; color-scheme: light; }
 .beer-inner, .label-inner { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 8vw, 8rem); align-items: center; }
@@ -90,6 +94,7 @@ dd { font-size: .93rem; font-weight: 700; }
 .footer p { font-size: .82rem; }
 .footer p span { display: block; color: var(--muted); }
 .footer a { white-space: nowrap; }
+
 @media (max-width: 860px) {
   .hero { min-height: 590px; grid-template-columns: .95fr 1.05fr; }
   .hero-art { min-height: 420px; }
