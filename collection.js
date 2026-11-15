@@ -46,6 +46,10 @@
   const textures = window.vesperLabelTextures;
   const buttons = [...document.querySelectorAll("[data-label]")];
   const label = document.querySelector(".label-preview img");
+  const dialog = document.querySelector("#label-dialog");
+  const zoom = document.querySelector("#label-scale");
+  const scroll = dialog.querySelector(".label-scroll");
+  const enlarged = scroll.querySelector("img");
   const title = document.querySelector("#release-name");
   const release = document.querySelector(".hero");
   let selected = 1;
@@ -81,6 +85,22 @@
     });
   }
 
+  function setFullSize(full) {
+    scroll.classList.toggle("is-full-size", full);
+    zoom.setAttribute("aria-pressed", String(full));
+    zoom.textContent = full ? "Fit to view" : "Full size";
+    scroll.scrollTo(full ? (scroll.scrollWidth - scroll.clientWidth) / 2 : 0, 0);
+  }
+  function openLabel() {
+    const beer = beers[selected];
+    set("#label-dialog-title", `${beer.name} label`);
+    enlarged.src = textures[selected];
+    enlarged.alt = `${beer.name} full label artwork`;
+    dialog.showModal();
+    setFullSize(false);
+  }
+  zoom.addEventListener("click", () => setFullSize(zoom.getAttribute("aria-pressed") === "false"));
+  document.querySelectorAll(".label-preview, .label-zoom").forEach(button => button.addEventListener("click", openLabel));
   for (const button of buttons) button.addEventListener("click", () => choose(Number(button.dataset.label)));
   choose(selected);
 })();
