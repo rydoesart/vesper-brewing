@@ -19,3 +19,11 @@ a:focus-visible, button:focus-visible, .can-wrap:focus-visible { outline: 2px so
 p, figure, dl, dd { margin: 0; }
 .skip { position: fixed; z-index: 5; top: 8px; left: 8px; padding: .7rem 1rem; background: var(--paper); color: var(--ink); transform: translateY(-150%); }
 .skip:focus { transform: none; }
+.masthead, .hero, .section-inner, .footer { width: min(100% - 2 * clamp(24px, 6vw, 104px), 1336px); margin-inline: auto; }
+.masthead { min-height: 92px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--rule); gap: 1rem; }
+.brand { display: flex; align-items: center; text-decoration: none; text-transform: uppercase; font-size: .96rem; letter-spacing: .28em; line-height: 1.18; }
+.brand img { width: 52px; height: 52px; margin-left: -9px; margin-right: 4px; filter: grayscale(1) contrast(3); mix-blend-mode: screen; }
+.brand small { display: block; font-size: .57rem; letter-spacing: .24em; margin-top: 3px; }
+nav { display: flex; gap: clamp(1.15rem, 4vw, 3.6rem); }
+nav a, .footer a { text-decoration: none; font-size: .78rem; letter-spacing: .11em; text-transform: uppercase; }
+nav a:hover, .footer a:hover { color: var(--gold); text-decoration: underline; text-underline-offset: .35em; }
