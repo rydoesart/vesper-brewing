@@ -87,6 +87,7 @@
           <p class="eyebrow">Behind the label</p>
           <h2 id="label-heading">A ring of light.</h2>
           <p id="label-description">A cobalt halo wraps around a dark disc, edged in gold.</p>
+          <button class="button label-zoom" type="button">Enlarge the label <span aria-hidden="true">↗</span></button>
         </div>
       </div>
     </section>
@@ -96,5 +97,15 @@
     <p><strong>Vesper Brewing Co.</strong><span>Courtenay, BC</span></p>
     <a href="#top">Back to top <span aria-hidden="true">↑</span></a>
   </footer>
+  <dialog id="label-dialog" aria-labelledby="label-dialog-title">
+    <div class="label-toolbar">
+      <h2 id="label-dialog-title">Velvet Eclipse label</h2>
+      <button type="button" id="label-scale" aria-pressed="false">Full size</button>
+      <form method="dialog"><button type="submit" autofocus>Close</button></form>
+    </div>
+    <div class="label-scroll" tabindex="0" aria-label="Label artwork">
+      <img alt="" width="3500" height="2400">
+    </div>
+  </dialog>
 </body>
 </html>
