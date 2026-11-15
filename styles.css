@@ -51,3 +51,13 @@ h1 { font-size: clamp(4.6rem, 8.7vw, 9rem); line-height: .86; letter-spacing: -.
 .can-wrap.is-dragging canvas { cursor: grabbing; }
 .hero-art figcaption { position: absolute; top: 21px; right: 0; display: flex; justify-content: center; align-items: center; white-space: nowrap; gap: 14px; color: #dedce5; font-size: .66rem; letter-spacing: .14em; }
 .hero-art figcaption span + span { border-left: 1px solid #e0bf7a75; padding-left: 17px; }
+.section-inner { padding-block: clamp(3.75rem, 8vw, 7.5rem); }
+.beer-section { background: var(--paper); color: #171923; color-scheme: light; }
+.beer-inner, .label-inner { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 8vw, 8rem); align-items: center; }
+.beer-section .eyebrow { color: #67491b; }
+h2 { font-size: clamp(3rem, 6vw, 6rem); line-height: .96; letter-spacing: -.06em; margin-top: .75rem; }
+.beer-detail > p:first-child, .label-copy > p:last-child { max-width: 38ch; font-size: 1.12rem; line-height: 1.68; }
+.beer-detail dl { display: grid; grid-template-columns: 1.15fr 1fr .8fr; gap: 10px; margin-block: 1.6rem 1.1rem; padding-block: 1rem; border-block: 1px solid #584b3b4f; }
+dt { color: #5d5043; font-size: .65rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+dd { font-size: .93rem; font-weight: 700; }
+.ingredients { max-width: 42ch; color: #50473b; font-size: .86rem; }

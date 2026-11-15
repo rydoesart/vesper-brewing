@@ -28,6 +28,7 @@
         <h1 id="release-name">Velvet<br>Eclipse</h1>
         <p class="lede">Dark beer. Soft landing.</p>
         <p class="hero-description">Roasted barley and oats give this dark stout its depth and smooth finish.</p>
+        <a class="button" href="#the-beer">Explore the beer <span aria-hidden="true">↓</span></a>
       </div>
       <figure class="hero-art">
         <div class="halo" aria-hidden="true"></div>
@@ -42,7 +43,23 @@
       </figure>
     </section>
 
-    <section id="the-beer" aria-label="The beer"></section>
+    <section class="beer-section" id="the-beer" aria-labelledby="beer-heading">
+      <div class="section-inner beer-inner">
+        <div>
+          <p class="eyebrow">The beer</p>
+          <h2 id="beer-heading">Roast meets<br>softness.</h2>
+        </div>
+        <div class="beer-detail">
+          <p>Roasted barley brings the dark character. Oats give the stout its soft, rounded body.</p>
+          <dl>
+            <div><dt>Style</dt><dd id="beer-style">Oatmeal stout</dd></div>
+            <div><dt>Strength</dt><dd id="beer-strength">5.8% ALC/VOL</dd></div>
+            <div><dt>Can size</dt><dd>473 mL</dd></div>
+          </dl>
+          <p class="ingredients"><strong>Ingredients</strong><br><span id="beer-ingredients">Water, malted barley, oats, roasted barley, hops, ale yeast.</span></p>
+        </div>
+      </div>
+    </section>
 
     <section id="the-label" aria-label="The label"></section>
   </main>
