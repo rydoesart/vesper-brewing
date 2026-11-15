@@ -73,3 +73,7 @@ dd { font-size: .93rem; font-weight: 700; }
 .label-preview img { width: 100%; height: auto; aspect-ratio: 35 / 24; object-fit: contain; }
 .label-copy > #label-description { color: var(--muted); margin-top: 21px; font-size: 1.12rem; }
 .label-zoom { font-family: inherit; cursor: zoom-in; }
+.footer { display: flex; justify-content: space-between; align-items: center; padding-block: 2.1rem; gap: 1rem; }
+.footer p { font-size: .82rem; }
+.footer p span { display: block; color: var(--muted); }
+.footer a { white-space: nowrap; }
