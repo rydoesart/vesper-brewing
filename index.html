@@ -44,9 +44,15 @@
         <div class="orbit orbit-outer" aria-hidden="true"></div>
         <div class="orbit orbit-inner" aria-hidden="true"></div>
         <div class="can-shadow" aria-hidden="true"></div>
-        <div class="can-wrap" id="can-viewer" aria-label="Rotating Velvet Eclipse can">
+        <div class="can-wrap" id="can-viewer" aria-label="Rotating Velvet Eclipse can" aria-describedby="can-hint">
           <img class="can" src="assets/velvet-eclipse-can.webp" alt="Velvet Eclipse can with a black and gold front label and deep blue artwork" width="750" height="1965">
           <canvas width="420" height="960" aria-hidden="true" hidden></canvas>
+        </div>
+        <div class="can-controls" hidden>
+          <button type="button" data-turn="-1" aria-label="Rotate can left">←</button>
+          <button type="button" data-reset aria-label="Reset to front view">Front view</button>
+          <button type="button" data-turn="1" aria-label="Rotate can right">→</button>
+          <p id="can-hint">Drag or swipe to rotate</p>
         </div>
         <figcaption><span id="can-strength">5.8% ALC/VOL</span><span>473 mL</span></figcaption>
       </figure>

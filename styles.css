@@ -56,6 +56,11 @@ h1 { font-size: clamp(4.6rem, 8.7vw, 9rem); line-height: .86; letter-spacing: -.
 .release-picker button { min-height: 38px; padding: 0 .62rem; background: #101521; color: var(--paper); border: 1px solid #ffffff32; font: .73rem var(--sans); cursor: pointer; }
 .release-picker button::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: .43rem; border-radius: 50%; background: var(--swatch); }
 .release-picker button:hover, .release-picker button[aria-pressed="true"] { border-color: var(--swatch); background: #222630; }
+.can-controls { position: absolute; bottom: 18px; left: 51%; transform: translateX(-50%); display: grid; grid-template-columns: auto auto auto; justify-content: center; gap: 4px 7px; text-align: center; }
+.can-controls button { background: #0b1020; border: 1px solid #7687a4; color: var(--paper); min-width: 44px; min-height: 44px; padding: 0 11px; white-space: nowrap; font: 700 .78rem var(--sans); cursor: pointer; }
+.can-controls button:hover { background: #233756; border-color: var(--gold); }
+.can-controls button[data-turn] { font-size: 1.25rem; }
+.can-controls p { grid-column: 1 / -1; color: #d4d7e1; font-size: .7rem; white-space: nowrap; }
 .section-inner { padding-block: clamp(3.75rem, 8vw, 7.5rem); }
 .beer-section { background: var(--paper); color: #171923; color-scheme: light; }
 .beer-inner, .label-inner { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 8vw, 8rem); align-items: center; }
