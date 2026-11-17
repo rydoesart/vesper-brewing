@@ -57,7 +57,7 @@ h1 { font-size: clamp(4.6rem, 8.7vw, 9rem); line-height: .86; letter-spacing: -.
 .can { width: 100%; height: auto; clip-path: polygon(10% 1%, 17% .35%, 84% .35%, 90% 1%, 90% 1.6%, 88% 2.1%, 88% 3.6%, 90% 5%, 95% 8%, 98% 10%, 99% 13%, 99% 94%, 98% 95%, 95% 96.3%, 91% 97%, 89% 98.1%, 85% 99%, 78% 99.6%, 64% 99.85%, 35% 99.85%, 21% 99.6%, 14% 99%, 11% 98.1%, 10% 97%, 5% 96.3%, 2% 95%, 1% 94%, 1% 13%, 2% 10%, 5% 8%, 10% 5%, 12% 3.6%, 12% 2.1%, 10% 1.6%); border-radius: 4%; }
 .can-wrap canvas { display: block; width: 100%; height: auto; cursor: grab; touch-action: pan-y; }
 .can-wrap.is-dragging canvas { cursor: grabbing; }
-.can-controls { position: absolute; bottom: 18px; left: 51%; transform: translateX(-50%); display: grid; grid-template-columns: auto auto auto; justify-content: center; gap: 4px 7px; text-align: center; }
+.can-controls { position: absolute; bottom: 18px; left: 51%; width: max-content; transform: translateX(-50%); display: grid; grid-template-columns: auto auto auto; justify-content: center; gap: 4px 7px; text-align: center; }
 .can-controls button { background: #0b1020; border: 1px solid #7687a4; color: var(--paper); min-width: 44px; min-height: 44px; padding: 0 11px; white-space: nowrap; font: 700 .78rem var(--sans); cursor: pointer; }
 .can-controls button:hover { background: #233756; border-color: var(--gold); }
 .can-controls button[data-turn] { font-size: 1.25rem; }
