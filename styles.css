@@ -161,6 +161,29 @@ h3 { margin: 1.4rem 0 .8rem; font: 400 clamp(1.65rem, 2.5vw, 2.4rem)/1.15 var(--
   .masthead.is-enhanced .site-nav .nav-cta { margin-top: .35rem; padding-inline: .75rem; }
 }
 
+.newsletter-section { background: var(--paper); color: #171923; color-scheme: light; }
+.newsletter-inner { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: clamp(2rem, 7vw, 7rem); }
+.newsletter-section .eyebrow { color: #67491b; }
+.newsletter-copy h2 { font-size: clamp(3rem, 5.4vw, 5.5rem); }
+.newsletter-copy > p:last-child { max-width: 35ch; margin-top: 1.5rem; color: #5d554b; }
+.input-label { display: block; margin-bottom: .6rem; font-size: .78rem; font-weight: 700; }
+.signup-row { display: flex; gap: 10px; }
+.signup-row input { min-width: 0; width: 100%; min-height: 50px; padding: .8rem 1rem; border: 1px solid #736b60; border-radius: 4px; background: #ffffff55; color: #171923; font-size: .9rem; }
+.signup-row input::placeholder { color: #6c665e; }
+.signup-row input:focus-visible { outline-color: #264e87; }
+.signup-row .button { flex-shrink: 0; background: #171923; border-color: #171923; color: var(--paper); gap: 1rem; }
+.signup-row .button:hover { background: #34394e; border-color: #34394e; }
+.consent { display: flex; align-items: flex-start; gap: .65rem; margin-top: 1rem; padding-block: .25rem; color: #50473b; font-size: .75rem; cursor: pointer; }
+.consent input { flex: 0 0 18px; width: 18px; height: 18px; margin: 1px 0 0; accent-color: #171923; }
+.form-note { margin-top: .65rem; color: #62594e; font-size: .73rem; }
+.signup-status:not(:empty) { margin-top: 1rem; padding: .85rem 1rem; border-left: 2px solid #7a5a22; background: #e0bf7a35; color: #42351e; font-size: .83rem; }
+.inline-link { display: inline-flex; align-items: center; gap: .75rem; padding-block: .65rem; font-size: .8rem; font-weight: 700; text-underline-offset: .25em; }
+.signup-privacy { margin-top: 1.2rem; border-top: 1px solid #584b3b3d; color: #50473b; font-size: .75rem; }
+.signup-privacy summary { min-height: 44px; padding-block: .8rem; cursor: pointer; }
+.signup-privacy p { padding: 0 0 .75rem; }
+@media (max-width: 860px) { .signup-row { flex-direction: column; } .signup-row .button { align-self: flex-start; } }
+@media (max-width: 650px) { .newsletter-inner { grid-template-columns: 1fr; } .signup-row .button { width: 100%; } }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; }

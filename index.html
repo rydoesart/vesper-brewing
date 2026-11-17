@@ -19,6 +19,7 @@
     <nav class="site-nav" id="site-nav" aria-label="Page sections">
       <a href="#the-beer">The beer</a>
       <a href="#the-label">The label</a>
+      <a href="#newsletter">Newsletter</a>
       <a class="nav-cta" href="#where-to-buy">Where to buy <span aria-hidden="true">&#8599;</span></a>
     </nav>
   </header>
@@ -123,6 +124,36 @@
         <p class="availability-note">Availability varies by release. Contact us by email to confirm stockists before making a trip.</p>
       </div>
     </section>
+    <section class="newsletter-section" id="newsletter" aria-labelledby="newsletter-heading">
+      <div class="section-inner newsletter-inner">
+        <div class="newsletter-copy">
+          <p class="eyebrow">The Vesper circle</p>
+          <h2 id="newsletter-heading">Stay for the<br>next pour.</h2>
+          <p>New releases, label stories, and notes from Vesper. A little something worth opening.</p>
+        </div>
+        <div>
+          <form id="newsletter-form" action="mailto:vesperbrewingcanada@gmail.com" method="get" aria-describedby="newsletter-note">
+            <input type="hidden" name="subject" value="Vesper newsletter signup request">
+            <label class="input-label" for="newsletter-email">Your email address</label>
+            <div class="signup-row">
+              <input id="newsletter-email" name="body" type="email" autocomplete="email" placeholder="you@example.com" maxlength="254" required>
+              <button class="button" type="submit">Join by email <span aria-hidden="true">&#8599;</span></button>
+            </div>
+            <label class="consent" for="newsletter-consent">
+              <input id="newsletter-consent" type="checkbox" required>
+              <span>I am of legal drinking age and would like email updates from Vesper.</span>
+            </label>
+            <p class="form-note" id="newsletter-note">Opens your email app. Send the request to join; this page does not subscribe you automatically.</p>
+            <p class="signup-status" id="newsletter-status" role="status" aria-live="polite"></p>
+            <a class="inline-link" id="newsletter-draft" href="mailto:vesperbrewingcanada@gmail.com?subject=Vesper%20newsletter%20signup%20request" hidden>Open the email request <span aria-hidden="true">&#8599;</span></a>
+          </form>
+          <details class="signup-privacy" id="signup-privacy">
+            <summary>How we use your email</summary>
+            <p>This page does not store your email address. Your signup request is sent through your email app to the Vesper team. To stop receiving updates, reply to an email and ask to unsubscribe.</p>
+          </details>
+        </div>
+      </div>
+    </section>
   </main>
 
   <footer class="footer">
@@ -143,5 +174,6 @@
   <script src="can-viewer.js"></script>
   <script src="collection.js"></script>
   <script src="navigation.js"></script>
+  <script src="newsletter.js"></script>
 </body>
 </html>
