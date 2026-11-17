@@ -138,6 +138,29 @@ dd { font-size: .93rem; font-weight: 700; }
   .label-art { order: 2; }
 }
 
+.site-nav .nav-cta { gap: .8rem; padding-inline: 1rem; border: 1px solid #e0bf7a70; border-radius: 4px; color: var(--gold); }
+.site-nav .nav-cta:hover { border-color: var(--gold); background: #e0bf7a0b; text-decoration: none; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+.hero-description { max-width: 40ch; }
+.buy-section { background: #0b0d14; border-bottom: 1px solid var(--rule); }
+.section-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; margin-bottom: 2.5rem; }
+.section-heading h2 { font-size: clamp(2.8rem, 5vw, 5rem); }
+.section-heading > p { max-width: 32ch; color: var(--muted); font-size: .95rem; }
+.buy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.buy-card { display: flex; flex-direction: column; align-items: flex-start; padding: clamp(1.5rem, 3.3vw, 3rem); border: 1px solid #ffffff24; border-radius: 6px; background: linear-gradient(140deg, #ffffff05, transparent); }
+.card-kicker { display: flex; align-items: center; gap: 1rem; color: var(--gold); font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .15em; }
+.card-kicker span { color: #969bad; font-weight: 400; }
+h3 { margin: 1.4rem 0 .8rem; font: 400 clamp(1.65rem, 2.5vw, 2.4rem)/1.15 var(--serif); letter-spacing: -.035em; }
+.buy-card > p:not(.card-kicker) { flex: 1; max-width: 43ch; margin-bottom: 1.7rem; color: var(--muted); font-size: .92rem; }
+.availability-note { margin-top: 1.3rem; color: var(--muted); font-size: .77rem; }
+@media (max-width: 650px) {
+  .section-heading { display: block; }
+  .section-heading > p { margin-top: 1.25rem; }
+  .buy-grid { grid-template-columns: 1fr; gap: 16px; }
+  .hero-actions .button { flex: 1 1 auto; }
+  .masthead.is-enhanced .site-nav .nav-cta { margin-top: .35rem; padding-inline: .75rem; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; }

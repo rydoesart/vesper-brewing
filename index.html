@@ -19,6 +19,7 @@
     <nav class="site-nav" id="site-nav" aria-label="Page sections">
       <a href="#the-beer">The beer</a>
       <a href="#the-label">The label</a>
+      <a class="nav-cta" href="#where-to-buy">Where to buy <span aria-hidden="true">&#8599;</span></a>
     </nav>
   </header>
 
@@ -29,6 +30,10 @@
         <h1 id="release-name">Velvet<br>Eclipse</h1>
         <p class="lede">Dark beer. Soft landing.</p>
         <p class="hero-description">Roasted barley and oats give this dark stout its depth and smooth finish.</p>
+        <div class="hero-actions">
+          <a class="button" href="#where-to-buy">Where to buy <span aria-hidden="true">&#8599;</span></a>
+          <a class="button button-secondary" href="#the-beer">Meet the beer <span aria-hidden="true">&#8595;</span></a>
+        </div>
         <fieldset class="release-picker">
           <legend>Explore the collection</legend>
           <button type="button" data-label="0" aria-pressed="false" style="--swatch:#ec637f">Lantern Hour</button>
@@ -90,6 +95,32 @@
           <p id="label-description">A cobalt halo wraps around a dark disc, edged in gold.</p>
           <button class="button label-zoom" type="button">Enlarge the label <span aria-hidden="true">↗</span></button>
         </div>
+      </div>
+    </section>
+    <section class="buy-section" id="where-to-buy" aria-labelledby="buy-heading">
+      <div class="section-inner">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Where to buy</p>
+            <h2 id="buy-heading">Find your next pour.</h2>
+          </div>
+          <p>For the fridge, the table, or your next gathering. Find out where Vesper is pouring.</p>
+        </div>
+        <div class="buy-grid">
+          <article class="buy-card">
+            <p class="card-kicker"><span>01</span> Take it home</p>
+            <h3>A little evening, to go.</h3>
+            <p>Looking for <span id="availability-beer">Velvet Eclipse</span>? Ask us about current stockists and can availability near you.</p>
+            <a class="button" data-availability-link href="mailto:vesperbrewingcanada@gmail.com?subject=Where%20to%20buy%20Velvet%20Eclipse">Ask where to buy <span aria-hidden="true">&#8599;</span></a>
+          </article>
+          <article class="buy-card">
+            <p class="card-kicker"><span>02</span> For your business</p>
+            <h3>Make room for Vesper.</h3>
+            <p>Bring the collection to your shelves or drinks list. Get in touch about retail and hospitality enquiries.</p>
+            <a class="button button-secondary" href="mailto:vesperbrewingcanada@gmail.com?subject=Stock%20Vesper%20Brewing">Stock Vesper <span aria-hidden="true">&#8599;</span></a>
+          </article>
+        </div>
+        <p class="availability-note">Availability varies by release. Contact us by email to confirm stockists before making a trip.</p>
       </div>
     </section>
   </main>

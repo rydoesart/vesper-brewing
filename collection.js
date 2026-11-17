@@ -67,6 +67,8 @@
       button.setAttribute("aria-pressed", String(Number(button.dataset.label) === index));
     }
     release.style.setProperty("--release-color", beer.color);
+    set("#availability-beer", beer.name);
+    document.querySelector('[data-availability-link]').href = 'mailto:vesperbrewingcanada@gmail.com?subject=' + encodeURIComponent('Where to buy ' + beer.name);
     set("#hero-style", beer.style);
     set(".lede", beer.line);
     set(".hero-description", beer.description);
