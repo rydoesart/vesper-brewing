@@ -3,9 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Meet Velvet Eclipse, the oatmeal stout from Vesper Brewing Co. in Courtenay, BC.">
+  <meta name="description" content="Discover Velvet Eclipse and the Vesper Brewing collection. Explore six beers, find where to buy, and join the newsletter from Courtenay, BC.">
   <meta name="theme-color" content="#080a10">
   <title>Velvet Eclipse · Vesper Brewing Co.</title>
+  <meta property="og:title" content="Velvet Eclipse | Vesper Brewing Co.">
+  <meta property="og:description" content="Dark beer. Soft landing. Discover the collection, find your next pour, and stay for the next release.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="assets/vesper-mark.png">
+  <link rel="preload" as="image" href="assets/velvet-eclipse-wrap.webp">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body id="top">
@@ -85,7 +90,7 @@
       <div class="section-inner label-inner">
         <figure class="label-art">
           <button class="label-preview" type="button" aria-label="Enlarge the label artwork">
-            <img src="assets/velvet-eclipse-art.webp" alt="Velvet Eclipse label artwork" width="3500" height="2400" decoding="async">
+            <img src="assets/velvet-eclipse-art.webp" alt="Velvet Eclipse label artwork" width="3500" height="2400" loading="lazy" decoding="async">
           </button>
         </figure>
         <div class="label-copy">
@@ -218,10 +223,10 @@
       <img alt="" width="3500" height="2400">
     </div>
   </dialog>
-  <script src="can-texture.js"></script>
-  <script src="can-viewer.js"></script>
-  <script src="collection.js"></script>
-  <script src="navigation.js"></script>
-  <script src="newsletter.js"></script>
+  <script defer src="can-texture.js"></script>
+  <script defer src="can-viewer.js"></script>
+  <script defer src="collection.js"></script>
+  <script defer src="navigation.js"></script>
+  <script defer src="newsletter.js"></script>
 </body>
 </html>
