@@ -13,7 +13,7 @@
       'My email address: ' + email.value.trim(),
       '',
       'I confirm that I am of legal drinking age and would like email updates from Vesper.',
-    ].join('\n');
+    ].join("\n");
     draft.href = 'mailto:vesperbrewingcanada@gmail.com?subject=' +
       encodeURIComponent('Vesper newsletter signup request') + '&body=' + encodeURIComponent(body);
     draft.hidden = false;
