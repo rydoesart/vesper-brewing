@@ -1,178 +1,240 @@
 (() => {
-  const viewer = document.querySelector("#can-viewer");
-  const canvas = viewer.querySelector("canvas");
-  const fallback = viewer.querySelector("img");
-  const controls = document.querySelector(".can-controls");
-  const ctx = canvas.getContext("2d", { alpha: true });
-  if (!ctx) return;
-
-  const width = 420;
-  const height = 960;
-  const axis = width / 2;
-  const radius = 194;
-  const labelTop = 152;
-  const labelHeight = 715;
-  const ellipseDepth = 17;
-  let image;
-  let rotation = 0;
+  const viewer = document.querySelector('#can-viewer');
+  const can = viewer.querySelector('img');
+  const canvas = viewer.querySelector('canvas');
+  const ctx = canvas.getContext('2d', { alpha: true });
+  const controls = document.querySelector('.can-controls');
+  const buttons = [...controls.querySelectorAll('button')];
+  const status = document.querySelector('#can-status');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const tau = Math.PI * 2;
+  // Sleeve placement and front registration measured from the supplied PSD.
+  // Texture distance must stay proportional to angle around the cylinder.
+  const sleeveTop = 36 / 2227;
+  const sleeveHeight = 2096 / 2227;
+  const frontCenter = 1496.5 / 3018;
+  const layer = document.createElement('canvas');
+  const layerCtx = layer.getContext('2d');
+  const lighting = document.createElement('canvas');
+  const lightingCtx = lighting.getContext('2d');
+  let frontImage;
+  let wrapImage;
+  let lightingPattern;
+  let angle = 0;
+  let target = 0;
+  let frame = 0;
+  let previousTime = 0;
   let drag;
-  let pendingFrame;
   let requestNumber = 0;
   let columns = [];
-  let canvasScale = 1;
-  const body = new Path2D(
-    "M 48 52 Q 40 57 54 69 L 55 83 C 55 115 16 134 16 181 " +
-    "L 16 822 C 16 866 27 887 48 901 L 54 919 Q 60 937 210 938 " +
-    "Q 360 937 366 919 L 372 901 C 393 887 404 866 404 822 " +
-    "L 404 181 C 404 134 365 115 365 83 L 366 69 Q 380 57 372 52 Z"
-  );
 
-  function gradient(x0, y0, x1, y1, stops) {
-    const result = ctx.createLinearGradient(x0, y0, x1, y1);
-    for (const [position, color] of stops) result.addColorStop(position, color);
-    return result;
+  const normalize = value => ((value + Math.PI) % tau + tau) % tau - Math.PI;
+
+  function uAt(theta) {
+    return frontCenter + theta / tau;
   }
 
-  function ellipse(x, y, rx, ry, fill) {
-    ctx.fillStyle = fill;
-    ctx.beginPath();
-    ctx.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
-    ctx.fill();
+  function load(src) {
+    const image = new Image();
+    image.src = src;
+    return image.decode().then(() => image);
   }
 
-  function uAt(x) {
-    const normalized = Math.max(-1, Math.min(1, (x - axis) / radius));
-    return 0.5 + Math.asin(normalized) / (Math.PI * 2);
-  }
-
-  function resize() {
-    const newWidth = Math.min(1050, Math.ceil(viewer.clientWidth * Math.max(1.5, (window.devicePixelRatio || 1) * 1.25)));
-    if (!newWidth || newWidth === canvas.width && columns.length) return;
-    canvas.width = newWidth;
-    canvas.height = Math.round(newWidth * height / width);
-    canvasScale = newWidth / width;
-    columns = Array.from({ length: newWidth }, (_, x) => {
-      const left = x / canvasScale;
-      const right = (x + 1) / canvasScale;
-      const normalized = (0.5 * (left + right) - axis) / radius;
-      if (Math.abs(normalized) > 1.003) return null;
-      return {
-        left: uAt(left),
-        span: Math.max(0.00001, uAt(right) - uAt(left)),
-        top: labelTop + ellipseDepth * Math.sqrt(Math.max(0, 1 - normalized ** 2)),
-      };
-    });
-    schedulePaint();
-  }
-
-  function drawLabel() {
-    const sourceWidth = image.naturalWidth;
-    const sourceHeight = image.naturalHeight;
-    ctx.imageSmoothingEnabled = true;
-    ctx.imageSmoothingQuality = "high";
-    for (let x = 0; x < columns.length; x++) {
-      const column = columns[x];
-      if (!column) continue;
-      const offset = ((column.left - rotation + 1) % 1) * sourceWidth;
-      const span = column.span * sourceWidth;
-      const firstSpan = Math.min(sourceWidth - offset, span);
-      const firstWidth = firstSpan / span;
-      const top = column.top * canvasScale;
-      const drawHeight = labelHeight * canvasScale;
-      ctx.drawImage(image, offset, 0, firstSpan, sourceHeight, x, top, firstWidth, drawHeight);
-      if (firstSpan < span) {
-        ctx.drawImage(image, 0, 0, span - firstSpan, sourceHeight, x + firstWidth, top, 1 - firstWidth, drawHeight);
-      }
+  function setInteractive(enabled) {
+    viewer.classList.toggle('is-interactive', enabled);
+    canvas.hidden = !enabled;
+    controls.hidden = !enabled;
+    if (enabled) {
+      viewer.tabIndex = 0;
+      viewer.setAttribute('role', 'group');
+      viewer.setAttribute('aria-describedby', 'can-hint');
+    } else {
+      viewer.removeAttribute('tabindex');
+      viewer.removeAttribute('role');
+      viewer.removeAttribute('aria-describedby');
     }
   }
 
+  function resize() {
+    if (!ctx || !layerCtx || !lightingCtx) return;
+    const width = Math.min(900, Math.max(600, Math.ceil(viewer.clientWidth * Math.max(2, window.devicePixelRatio || 1))));
+    if (!width || canvas.width === width && columns.length) return;
+    canvas.width = layer.width = width;
+    canvas.height = layer.height = Math.round(width * 1940 / 750);
+    // Body bounds measured from the source silhouette, rather than a drawn can.
+    const axis = width * 436.5 / 861;
+    const radius = width * 423.5 / 861;
+    columns = Array.from({ length: width }, (_, x) => ({
+      left: Math.asin(Math.max(-1, Math.min(1, (x - axis) / radius))),
+      right: Math.asin(Math.max(-1, Math.min(1, (x + 1 - axis) / radius))),
+    }));
+    if (frontImage) prepareLighting();
+    schedule();
+  }
+
+  function prepareLighting() {
+    // Reuse a full-width unprinted row just below the shoulder for its studio sheen.
+    lighting.width = canvas.width;
+    lighting.height = 1;
+    lightingCtx.drawImage(frontImage, 0, Math.round(frontImage.height * .12), frontImage.width, 1, 0, 0, lighting.width, 1);
+    lightingPattern = layerCtx.createPattern(lighting, 'repeat-y');
+  }
+
   function paint() {
-    pendingFrame = 0;
-    if (!image || !columns.length) return;
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.setTransform(canvasScale, 0, 0, canvasScale, 0, 0);
-    ctx.save();
-    ctx.clip(body);
-    ctx.fillStyle = gradient(16, 0, 404, 0, [
-      [0, "#08090d"], [.18, "#20232a"], [.49, "#15171b"], [.78, "#24272d"], [1, "#0c0d10"],
-    ]);
-    ctx.fillRect(0, 0, width, height);
-    const bottom = gradient(0, 875, 0, 941, [
-      [0, "#15171b"], [.16, "#777a82"], [.28, "#bbbfc5"],
-      [.56, "#696d74"], [.81, "#b2b6bc"], [1, "#535761"],
-    ]);
-    ctx.fillStyle = bottom;
-    ctx.fillRect(0, 875, width, 66);
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    drawLabel();
-    ctx.setTransform(canvasScale, 0, 0, canvasScale, 0, 0);
-    ctx.fillStyle = gradient(16, 0, 404, 0, [
-      [0, "#0008"], [.08, "#0002"], [.18, "#fff2"], [.34, "#fff0"],
-      [.67, "#0000"], [.84, "#fff2"], [.94, "#0002"], [1, "#0008"],
-    ]);
-    ctx.fillRect(0, 52, width, height - 52);
-    ctx.restore();
-
-    const silver = gradient(47, 28, 373, 58, [
-      [0, "#7c8087"], [.22, "#d7dbe0"], [.48, "#9397a0"], [.78, "#dfe2e6"], [1, "#6c727d"],
-    ]);
-    ellipse(axis, 53, 166, 20, "#676d76");
-    ellipse(axis, 48, 166, 17, silver);
-    ellipse(axis, 46, 148, 11, "#9297a1");
-    ellipse(axis, 46, 136, 8, silver);
-    ellipse(axis + 10, 46, 25, 3.6, "#53565e");
+    if (!frontImage || !ctx) return;
+    const width = canvas.width;
+    const height = canvas.height;
+    ctx.clearRect(0, 0, width, height);
+    ctx.drawImage(frontImage, 0, 0, width, height);
+    viewer.dataset.rotation = String(Math.round(normalize(angle) / tau * 36000) / 100);
+    if (!wrapImage) return;
+    layerCtx.clearRect(0, 0, width, height);
+    layerCtx.imageSmoothingEnabled = true;
+    layerCtx.imageSmoothingQuality = 'high';
+    const sleeveY = sleeveTop * height;
+    const sleevePixels = sleeveHeight * height;
+    const circumference = width * 423.5 / 861 * tau;
+    // One full wrap keeps the source artwork's width-to-height ratio.
+    // Leave unprinted can above/below it rather than stretching it vertically.
+    const labelHeight = Math.min(sleevePixels, circumference * wrapImage.height / wrapImage.width);
+    const top = sleeveY + (sleevePixels - labelHeight) / 2;
+    layerCtx.fillStyle = '#101010';
+    layerCtx.fillRect(0, sleeveY, width, sleevePixels);
+    for (let x = 0; x < columns.length; x++) {
+      const column = columns[x];
+      const left = uAt(column.left - angle);
+      const span = (column.right - column.left) / tau;
+      const sourceX = ((left % 1 + 1) % 1) * wrapImage.width;
+      const sourceWidth = Math.max(.01, span * wrapImage.width);
+      const first = Math.min(sourceWidth, wrapImage.width - sourceX);
+      const part = first / sourceWidth;
+      layerCtx.drawImage(wrapImage, sourceX, 0, first, wrapImage.height, x, top, part, labelHeight);
+      if (part < 1) layerCtx.drawImage(wrapImage, 0, 0, sourceWidth - first, wrapImage.height, x + part, top, 1 - part, labelHeight);
+    }
+    layerCtx.globalCompositeOperation = 'multiply';
+    const shading = layerCtx.createLinearGradient(0, 0, width, 0);
+    for (const [stop, color] of [[0, '#777'], [.12, '#d8d8d8'], [.35, '#f4f4f4'], [.65, '#e8e8e8'], [.88, '#cfcfcf'], [1, '#777']]) shading.addColorStop(stop, color);
+    layerCtx.fillStyle = shading;
+    layerCtx.fillRect(0, sleeveY, width, sleevePixels);
+    layerCtx.globalCompositeOperation = 'screen';
+    layerCtx.fillStyle = lightingPattern;
+    layerCtx.fillRect(0, sleeveY, width, sleevePixels);
+    // Original photographic alpha keeps the shoulder, base, and edges intact.
+    layerCtx.globalCompositeOperation = 'destination-in';
+    layerCtx.drawImage(frontImage, 0, 0, width, height);
+    layerCtx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(layer, 0, 0);
   }
 
-  function schedulePaint() {
-    if (!pendingFrame) pendingFrame = requestAnimationFrame(paint);
+  function tick(time) {
+    frame = 0;
+    const elapsed = previousTime ? Math.min(50, time - previousTime) : 16;
+    previousTime = time;
+    const difference = target - angle;
+    if (reducedMotion.matches || Math.abs(difference) < .001) angle = target;
+    else angle += difference * (1 - Math.exp(-elapsed / 45));
+    paint();
+    if (angle !== target) schedule();
+    else previousTime = 0;
   }
 
-  function rotate(angle) {
-    rotation = ((angle % 1) + 1) % 1;
-    schedulePaint();
+  function schedule() {
+    if (!frame) frame = requestAnimationFrame(tick);
+  }
+
+  function turn(amount) {
+    if (!wrapImage) return;
+    target += amount;
+    schedule();
+  }
+
+  function reset() {
+    if (!wrapImage) return;
+    target = Math.round(angle / tau) * tau;
+    schedule();
   }
 
   async function showLabel(src, name) {
     const request = ++requestNumber;
-    const next = new Image();
-    next.src = src;
-    await next.decode();
+    const canSrc = src.replace('-wrap.webp', '-can.webp');
+    viewer.setAttribute('aria-busy', 'true');
+    viewer.setAttribute('aria-label', `${name} can, interactive label`);
+    setInteractive(false);
+    drag = undefined;
+    viewer.classList.remove('is-dragging');
+    wrapImage = undefined;
+    frontImage = undefined;
+    angle = target = 0;
+    can.hidden = true;
+    status.textContent = '';
+    status.classList.remove('has-preview');
+    const [frontResult, wrapResult] = await Promise.allSettled([load(canSrc), load(src)]);
     if (request !== requestNumber) return;
-    image = next;
-    viewer.setAttribute("aria-label", `Rotating ${name} can`);
-    fallback.hidden = true;
-    canvas.hidden = false;
-    controls.hidden = false;
-    viewer.tabIndex = 0;
-    viewer.setAttribute("role", "group");
-    resize();
-    rotate(0);
+    viewer.setAttribute('aria-busy', 'false');
+    if (frontResult.status === 'rejected') {
+      status.textContent = `${name} can preview could not load. Choose another beer or try again.`;
+      throw frontResult.reason;
+    }
+    frontImage = frontResult.value;
+    can.src = canSrc;
+    can.alt = `${name} can, original mockup`;
+    can.hidden = false;
+    status.textContent = '';
+    if (wrapResult.status === 'fulfilled' && ctx && layerCtx && lightingCtx) {
+      wrapImage = wrapResult.value;
+      resize();
+      prepareLighting();
+      paint();
+      setInteractive(true);
+    } else if (wrapResult.status === 'rejected') {
+      status.classList.add('has-preview');
+      status.textContent = 'The front mockup is available, but the rotating label could not load. Select the beer again to retry.';
+    }
   }
 
-  canvas.addEventListener("pointerdown", event => {
-    if (!event.isPrimary || event.button !== 0) return;
-    drag = { id: event.pointerId, x: event.clientX, rotation };
-    canvas.setPointerCapture(event.pointerId);
-    viewer.classList.add("is-dragging");
+  for (const button of buttons) button.addEventListener('click', () => {
+    if (button.hasAttribute('data-front')) reset();
+    else turn(Number(button.dataset.turn) * tau / 8);
   });
-  canvas.addEventListener("pointermove", event => {
-    if (drag?.id === event.pointerId) rotate(drag.rotation + (event.clientX - drag.x) / (canvas.clientWidth * 1.65));
-  });
-  canvas.addEventListener("lostpointercapture", () => {
-    drag = null;
-    viewer.classList.remove("is-dragging");
-  });
-  for (const button of controls.querySelectorAll("[data-turn]")) {
-    button.addEventListener("click", () => rotate(rotation + Number(button.dataset.turn) / 12));
-  }
-  controls.querySelector("[data-reset]").addEventListener("click", () => rotate(0));
-  viewer.addEventListener("keydown", event => {
-    if (!["ArrowLeft", "ArrowRight", "Home"].includes(event.key)) return;
+
+  viewer.addEventListener('keydown', event => {
+    if (event.key === 'Home') reset();
+    else if (event.key === 'ArrowLeft') turn(-tau / 8);
+    else if (event.key === 'ArrowRight') turn(tau / 8);
+    else return;
     event.preventDefault();
-    rotate(event.key === "Home" ? 0 : rotation + (event.key === "ArrowLeft" ? -1 : 1) / 12);
   });
+
+  viewer.addEventListener('pointerdown', event => {
+    if (!wrapImage || !event.isPrimary || event.button !== 0) return;
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY, angle, active: false };
+    viewer.setPointerCapture(event.pointerId);
+  });
+  viewer.addEventListener('pointermove', event => {
+    if (!drag || drag.id !== event.pointerId) return;
+    const dx = event.clientX - drag.x;
+    const dy = event.clientY - drag.y;
+    if (!drag.active) {
+      if (Math.abs(dx) < 5) return;
+      if (Math.abs(dy) > Math.abs(dx)) return;
+      drag.active = true;
+      viewer.classList.add('is-dragging');
+      viewer.focus({ preventScroll: true });
+    }
+    event.preventDefault();
+    angle = target = drag.angle + dx / viewer.clientWidth * Math.PI;
+    schedule();
+  });
+  function stopDrag(event) {
+    if (drag?.id !== event.pointerId) return;
+    drag = undefined;
+    viewer.classList.remove('is-dragging');
+    if (viewer.hasPointerCapture(event.pointerId)) viewer.releasePointerCapture(event.pointerId);
+  }
+  viewer.addEventListener('pointerup', stopDrag);
+  viewer.addEventListener('pointercancel', stopDrag);
+  viewer.addEventListener('lostpointercapture', stopDrag);
+  reducedMotion.addEventListener('change', schedule);
   new ResizeObserver(resize).observe(viewer);
-  window.addEventListener("resize", resize);
-  window.vesperCan = { showLabel };
+  window.vesperCan = { showLabel, reset };
 })();

@@ -10,7 +10,7 @@
   <meta property="og:description" content="Dark beer. Soft landing. Discover the collection, find your next pour, and stay for the next release.">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/png" href="assets/vesper-mark.png">
-  <link rel="preload" as="image" href="assets/velvet-eclipse-wrap.webp">
+  <link rel="preload" as="image" href="assets/velvet-eclipse-can.webp">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body id="top">
@@ -51,20 +51,26 @@
       </div>
       <figure class="hero-art">
         <div class="halo" aria-hidden="true"></div>
-        <div class="orbit orbit-outer" aria-hidden="true"></div>
-        <div class="orbit orbit-inner" aria-hidden="true"></div>
-        <div class="can-shadow" aria-hidden="true"></div>
-        <div class="can-wrap" id="can-viewer" aria-label="Rotating Velvet Eclipse can" aria-describedby="can-hint">
-          <img class="can" src="assets/velvet-eclipse-can.webp" alt="Velvet Eclipse can with a black and gold front label and deep blue artwork" width="750" height="1965">
-          <canvas width="420" height="960" aria-hidden="true" hidden></canvas>
+        <div class="can-wrap" id="can-viewer">
+          <img class="can" src="assets/velvet-eclipse-can.webp" alt="Velvet Eclipse can, original mockup" width="750" height="1940" fetchpriority="high">
+          <canvas width="750" height="1940" aria-hidden="true" hidden></canvas>
         </div>
         <div class="can-controls" hidden>
-          <button type="button" data-turn="-1" aria-label="Rotate can left">←</button>
-          <button type="button" data-reset aria-label="Reset to front view">Front view</button>
-          <button type="button" data-turn="1" aria-label="Rotate can right">→</button>
-          <p id="can-hint">Drag or swipe to rotate</p>
+          <div class="can-buttons" role="group" aria-label="Turn the label">
+            <button type="button" data-turn="-1" aria-label="Rotate label left" title="Rotate left">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 6 8 12 14 18M8 12h12"/></svg>
+            </button>
+            <button type="button" data-front aria-label="Reset label to front view" title="Front view">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="6.5"/></svg>
+            </button>
+            <button type="button" data-turn="1" aria-label="Rotate label right" title="Rotate right">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m10 6 6 6-6 6M4 12h12"/></svg>
+            </button>
+          </div>
+          <p id="can-hint">Drag or swipe the label<span class="sr-only">. Focus the can and use Left or Right arrow keys to turn the label, or Home to return to the front.</span></p>
         </div>
-        <figcaption><span id="can-strength">5.8% ALC/VOL</span><span>473 mL</span></figcaption>
+        <figcaption><span id="can-strength">5.8% alc/vol</span><span>473 mL</span></figcaption>
+        <p class="can-status" id="can-status" role="status"></p>
       </figure>
     </section>
 
@@ -90,7 +96,7 @@
       <div class="section-inner label-inner">
         <figure class="label-art">
           <button class="label-preview" type="button" aria-label="Enlarge the label artwork">
-            <img src="assets/velvet-eclipse-art.webp" alt="Velvet Eclipse label artwork" width="3500" height="2400" loading="lazy" decoding="async">
+            <img src="assets/velvet-eclipse-wrap.webp" alt="Velvet Eclipse flat label artwork" width="3500" height="2400" loading="lazy" decoding="async">
           </button>
         </figure>
         <div class="label-copy">
