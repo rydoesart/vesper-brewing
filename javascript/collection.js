@@ -75,13 +75,14 @@
     set("#beer-heading", index === 1 ? "Roast meets softness." : beer.name);
     set(".beer-detail > p:first-child", beer.character);
     set("#beer-style", beer.style);
-    set("#beer-strength", `${beer.abv} ALC/VOL`);
-    set("#can-strength", `${beer.abv} ALC/VOL`);
+    set("#beer-strength", `${beer.abv} alc/vol`);
+    set("#can-strength", `${beer.abv} alc/vol`);
     set("#beer-ingredients", beer.ingredients);
     set("#label-heading", beer.design);
     set("#label-description", beer.label);
     label.src = textures[index];
     label.alt = `${beer.name} flat label artwork`;
+    document.querySelector('.label-preview').setAttribute('aria-label', `View ${beer.name} label artwork`);
     window.vesperCan?.showLabel(textures[index], beer.name).catch(error => {
       console.warn("Can preview could not load.", error);
     });

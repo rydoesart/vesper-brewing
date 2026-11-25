@@ -7,7 +7,7 @@
   function setOpen(open) {
     header.dataset.open = String(open);
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.querySelector('span').textContent = open ? '−' : '+';
+    toggle.textContent = open ? 'Close menu' : 'Menu';
   }
 
   setOpen(false);
