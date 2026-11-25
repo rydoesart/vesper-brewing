@@ -8,8 +8,7 @@
   const status = document.querySelector('#can-status');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   const tau = Math.PI * 2;
-  // Sleeve placement and front registration measured from the supplied PSD.
-  // Texture distance must stay proportional to angle around the cylinder.
+  // Use the sleeve position and front alignment measured in the source PSD.
   const sleeveTop = 36 / 2227;
   const sleeveHeight = 2096 / 2227;
   const frontCenter = 1496.5 / 3018;
@@ -31,6 +30,7 @@
   const normalize = value => ((value + Math.PI) % tau + tau) % tau - Math.PI;
 
   function uAt(theta) {
+    // Map equal turns to equal distances on the flat artwork.
     return frontCenter + theta / tau;
   }
 
@@ -61,7 +61,7 @@
     if (!width || canvas.width === width && columns.length) return;
     canvas.width = layer.width = width;
     canvas.height = layer.height = Math.round(width * 1940 / 750);
-    // Body bounds measured from the source silhouette, rather than a drawn can.
+    // Use the source silhouette to map screen columns to angles on the can.
     const axis = width * 436.5 / 861;
     const radius = width * 423.5 / 861;
     columns = Array.from({ length: width }, (_, x) => ({
@@ -73,7 +73,7 @@
   }
 
   function prepareLighting() {
-    // Reuse a full-width unprinted row just below the shoulder for its studio sheen.
+    // Sample an unprinted row below the shoulder to match the mockup lighting.
     lighting.width = canvas.width;
     lighting.height = 1;
     lightingCtx.drawImage(frontImage, 0, Math.round(frontImage.height * .12), frontImage.width, 1, 0, 0, lighting.width, 1);
@@ -94,8 +94,7 @@
     const sleeveY = sleeveTop * height;
     const sleevePixels = sleeveHeight * height;
     const circumference = width * 423.5 / 861 * tau;
-    // One full wrap keeps the source artwork's width-to-height ratio.
-    // Leave unprinted can above/below it rather than stretching it vertically.
+    // Size the artwork by the can circumference to preserve its proportions.
     const labelHeight = Math.min(sleevePixels, circumference * wrapImage.height / wrapImage.width);
     const top = sleeveY + (sleevePixels - labelHeight) / 2;
     layerCtx.fillStyle = '#101010';
@@ -119,7 +118,7 @@
     layerCtx.globalCompositeOperation = 'screen';
     layerCtx.fillStyle = lightingPattern;
     layerCtx.fillRect(0, sleeveY, width, sleevePixels);
-    // Original photographic alpha keeps the shoulder, base, and edges intact.
+    // Mask the sleeve with the mockup to preserve the can silhouette.
     layerCtx.globalCompositeOperation = 'destination-in';
     layerCtx.drawImage(frontImage, 0, 0, width, height);
     layerCtx.globalCompositeOperation = 'source-over';
