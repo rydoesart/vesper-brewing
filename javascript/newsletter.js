@@ -17,7 +17,7 @@
     draft.href = 'mailto:vesperbrewingcanada@gmail.com?subject=' +
       encodeURIComponent('Vesper newsletter signup request') + '&body=' + encodeURIComponent(body);
     draft.hidden = false;
-    status.textContent = 'One more step: send the request in your email app. If it did not open, use the email request link below. Your subscription is not yet confirmed.';
+    status.textContent = 'Send the request in your email app to join. If it did not open, use the link below. Your subscription is not yet confirmed.';
     draft.click();
   });
 
